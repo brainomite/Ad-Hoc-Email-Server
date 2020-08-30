@@ -2388,7 +2388,7 @@ class HomeComponent {
             },
             {
                 title: 'Simple',
-                text: 'Using AHEM is always simple and free. Just send an email to [mailbox of your choice]@ahem.email and check your ' +
+                text: 'Using AHEM is always simple and free. Just send an email to [mailbox of your choice]@ahem.dontyoulike.me and check your ' +
                     'disposable mailbox.',
                 iconName: 'dove',
                 iconGroup: 'fas'
