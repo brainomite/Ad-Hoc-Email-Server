@@ -4,15 +4,15 @@
 
 
 [![Build Status](https://travis-ci.org/o4oren/Ad-Hoc-Email-Server.svg?branch=master)](https://travis-ci.org/o4oren/Ad-Hoc-Email-Server)
-[![Website](https://img.shields.io/website?down_message=Down&up_message=Up&url=https%3A%2F%2Fwww.ahem.email)](https://www.ahem.email)
+[![Website](https://img.shields.io/website?down_message=Down&up_message=Up&url=https%3A%2F%2Fahem.dontyoulike.me)](https://ahem.dontyoulike.me)
 
 <h2 align="center">
   Ad Hoc Email Server (AHEM)
 </h2>
-Ad Hoc Email Server is, well, an ad hoc mail server. 
+Ad Hoc Email Server is, well, an ad hoc mail server.
 AHEM can be used for testing, where a large (or unknown) number of mailboxes are needed or to provide disposable emails for registering for services that might expose the email to spam;
 This project will provide both a RESTful API and web application for consuming the service.
-A working example of AHEM is always available [here](https://www.ahem.email "AHEM - Ad Hoc Disposable Temporary Email address").
+A working example of AHEM is always available [here](https://ahem.dontyoulike.me "AHEM - Ad Hoc Disposable Temporary Email address").
 
 ## Getting Started
 AHEM will accept any email sent to it (on the domains specified in the configuration), and create an ad hoc mailbox as needed.
@@ -21,7 +21,7 @@ That's it. No authentication. No account creation.
 
 ## Prerequisites
 ```
-nodejs > v10 
+nodejs > v10
 angular cli installed globally (npm install -g @angular/cli)
 mongodb
 ```
@@ -86,7 +86,7 @@ maxAllowedApiCalls | If using token validation, this is the amount of API calls 
 The AHEM color palette is available [here](https://material.io/tools/color/#!/?view.left=0&view.right=0&primary.color=515f77&secondary.color=E3F2FD).
 
 ### API
-The full API documentation is available [here](https://www.ahem.email/help/api "AHEM - API Help").
+The full API documentation is available [here](https://ahem.dontyoulike.me/help/api "AHEM - API Help").
 
 A brief list of RESTful resources:
 
@@ -132,8 +132,8 @@ Replace XX-XXXXXXXXX-X with your GA id.
 - [x] Migrate to mongodb
 - [x] Update missing emails page and loading circles
 - [ ] Sort out logging
-- [x] Separate mailbox view from email view pages 
-- [x] Separate server and webapp properties 
+- [x] Separate mailbox view from email view pages
+- [x] Separate server and webapp properties
 - [x] Better home page
 - [ ] Add apis to get mailbox references from email, get mailbox and email counts - both general and in mailbox context
 

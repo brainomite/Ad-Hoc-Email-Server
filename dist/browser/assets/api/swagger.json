@@ -2,14 +2,14 @@
   "openapi": "3.0.0",
   "info": {
     "title": "AHEM - Ad Hoc Email",
-    "description": "Welcome to the AHEM API documentation.<br>AHEM provides an easy to use RESTful API that allows testing or building anything on top of the AHEM mail server.<br>All endpoints follow the URL: <br>https://www.ahem.email/api/<br><br>__Authorization__<br>A token must be obtained by calling https://www.ahem.email/auth/authenticate.<br>The response will contain a token field. Tokens must be added to each api call in the Authorization header and a Bearer token, unless the server is set with token expiration == -1.",
+    "description": "Welcome to the AHEM API documentation.<br>AHEM provides an easy to use RESTful API that allows testing or building anything on top of the AHEM mail server.<br>All endpoints follow the URL: <br>https://ahem.dontyoulike.me/api/<br><br>__Authorization__<br>A token must be obtained by calling https://ahem.dontyoulike.me/auth/authenticate.<br>The response will contain a token field. Tokens must be added to each api call in the Authorization header and a Bearer token, unless the server is set with token expiration == -1.",
     "contact": {},
-    "termsOfService": "https://www.ahem.email/privacy",
+    "termsOfService": "https://ahem.dontyoulike.me/privacy",
     "version": "1.0"
   },
   "servers": [
     {
-      "url": "https://www.ahem.email",
+      "url": "https://ahem.dontyoulike.me",
       "variables": {}
     }
   ],
@@ -71,12 +71,12 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "serverBaseUri": "https://www.ahem.email",
+                    "serverBaseUri": "https://ahem.dontyoulike.me",
                     "emailDeleteInterval": 86400,
                     "emailDeleteAge": 7200,
                     "allowedDomains": [
-                      "ahem.email",
-                      "mail.ahem.email",
+                      "ahem.dontyoulike.me",
+                      "ahem.dontyoulike.me",
                       "ahem-email.com"
                     ],
                     "allowAutocomplete": false,
@@ -85,12 +85,12 @@
                   "$ref": "#/components/schemas/GetServerPropertiesResponse"
                 },
                 "example": {
-                  "serverBaseUri": "https://www.ahem.email",
+                  "serverBaseUri": "https://ahem.dontyoulike.me",
                   "emailDeleteInterval": 86400,
                   "emailDeleteAge": 7200,
                   "allowedDomains": [
-                    "ahem.email",
-                    "mail.ahem.email",
+                    "ahem.dontyoulike.me",
+                    "ahem.dontyoulike.me",
                     "ahem-email.com"
                   ],
                   "allowAutocomplete": false,
@@ -124,7 +124,7 @@
               "application/json": {
                 "schema": {
                   "example": {
-                    "serverBaseUri": "https://www.ahem.email",
+                    "serverBaseUri": "https://ahem.dontyoulike.me",
                     "count": 654,
                     "since": 1539648000
                     },
@@ -875,7 +875,7 @@
         "properties": {
           "serverBaseUri": {
             "type": "string",
-            "example": "https://www.ahem.email"
+            "example": "https://ahem.dontyoulike.me"
           },
           "emailDeleteInterval": {
             "type": "integer",
@@ -892,8 +892,8 @@
             "items": {
               "type": "string",
               "example": [
-                "ahem.email",
-                "mail.ahem.email",
+                "ahem.dontyoulike.me",
+                "ahem.dontyoulike.me",
                 "ahem-email.com"
               ]
             },
@@ -909,12 +909,12 @@
           }
         },
         "example": {
-          "serverBaseUri": "https://www.ahem.email",
+          "serverBaseUri": "https://ahem.dontyoulike.me",
           "emailDeleteInterval": 86400,
           "emailDeleteAge": 7200,
           "allowedDomains": [
-            "ahem.email",
-            "mail.ahem.email",
+            "ahem.dontyoulike.me",
+            "ahem.dontyoulike.me",
             "ahem-email.com"
           ],
           "allowAutocomplete": false,

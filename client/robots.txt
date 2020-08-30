@@ -1,4 +1,4 @@
-Sitemap: https://www.ahem.email/sitemap.xml
+Sitemap: https://ahem.dontyoulike.me/sitemap.xml
 User-agent: *
 Disallow: /mailbox/*
 Disallow: /api/*
