@@ -34,6 +34,10 @@ export class HomeComponent implements OnInit {
     this.showAd = this.seoService.shouldShowAd(1);
   }
 
+  getDuration(){
+    return this.durationPipe.transform(this.properties.emailDeleteAge + this.properties.emailDeleteInterval, 'seconds')
+  }
+
   createHomePageItems() {
     this.items = [
       {
