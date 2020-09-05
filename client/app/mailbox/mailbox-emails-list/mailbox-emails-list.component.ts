@@ -8,6 +8,18 @@ import {SeoService} from '../../core/services/seo.service';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {DeviceService} from '../../core/services/device.service';
 
+const copyToClipboard = str => {
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
+
 @Component({
   selector: 'app-mailbox-emails',
   templateUrl: './mailbox-emails-list.component.html',
@@ -21,6 +33,7 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
   selectedEmail: EmailInfo;
   emailId: string;
   loading = true;
+  copied = false;
 
   constructor(private apiService: ApiService,
       private route: ActivatedRoute,
@@ -112,5 +125,12 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
 
   navigateToMailbox() {
     this.router.navigateByUrl('mailbox/' + this.mailbox);
+  }
+
+  copyEmail() {
+    copyToClipboard(this.getEmptyMailboxText())
+    this.copied = !this.copied;
+    const revert = () => this.copied = !this.copied;
+    setTimeout(revert.bind(this), 1000);
   }
 }
