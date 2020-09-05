@@ -10,6 +10,18 @@ import {ConfigService} from '../../core/services/config.service';
 declare function require(name: string)
 const generateName = require('sillyname');
 
+const copyToClipboard = str => {
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
+
 @Component({
   selector: 'app-mailbox-selector',
   templateUrl: './mailbox-selector.component.html',
@@ -62,6 +74,9 @@ export class MailboxSelectorComponent implements OnInit {
     // }
 
     this.selectedMailbox = generateName().replace(' ', '-');
+  }
+  copyEmail(){
+    copyToClipboard(this.selectedMailbox.toLowerCase() + '@' + this.properties.allowedDomains[0])
   }
 
 }

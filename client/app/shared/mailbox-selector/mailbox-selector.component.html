@@ -30,6 +30,7 @@
     </mat-autocomplete>
     <button mat-button routerLink="/mailbox/{{selectedMailbox | trimDomain}}">Submit</button>
     <button mat-button (click)="generateEmail()">Generate</button>
+    <button mat-button (click)="copyEmail()">Copy email</button>
   </div>
 </div>
 
