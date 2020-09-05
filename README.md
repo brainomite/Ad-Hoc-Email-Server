@@ -1,6 +1,4 @@
-<p align="center">
-  <img width="460" src="https://github.com/o4oren/Ad-Hoc-Email-Server/blob/master/client/assets/svg/ahem-happy-top-bottom-dk.svg?raw=true">
-</p>
+
 
 
 [![Build Status](https://travis-ci.org/o4oren/Ad-Hoc-Email-Server.svg?branch=master)](https://travis-ci.org/o4oren/Ad-Hoc-Email-Server)
@@ -12,7 +10,7 @@
 Ad Hoc Email Server is, well, an ad hoc mail server.
 AHEM can be used for testing, where a large (or unknown) number of mailboxes are needed or to provide disposable emails for registering for services that might expose the email to spam;
 This project will provide both a RESTful API and web application for consuming the service.
-A working example of AHEM is always available [here](https://ahem.dontyoulike.me "AHEM - Ad Hoc Disposable Temporary Email address").
+A working example of AHEM is always available [here](https://ahem.dontyoulike.com)
 
 ## Getting Started
 AHEM will accept any email sent to it (on the domains specified in the configuration), and create an ad hoc mailbox as needed.
@@ -23,6 +21,7 @@ That's it. No authentication. No account creation.
 ```
 nodejs > v10
 angular cli installed globally (npm install -g @angular/cli)
+concurrently installed globally (npm install -g concurrently)
 mongodb
 ```
 

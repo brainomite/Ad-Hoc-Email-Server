@@ -7,6 +7,9 @@ import {Observable} from 'rxjs/internal/Observable';
 import {Router} from '@angular/router';
 import {ConfigService} from '../../core/services/config.service';
 
+declare function require(name: string)
+const generateName = require('sillyname');
+
 @Component({
   selector: 'app-mailbox-selector',
   templateUrl: './mailbox-selector.component.html',
@@ -51,14 +54,14 @@ export class MailboxSelectorComponent implements OnInit {
   }
 
   generateEmail() {
-    let email = '';
-    const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    // let email = '';
+    // const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
 
-    for (let i = 0; i < 8; i++) {
-      email += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
+    // for (let i = 0; i < 8; i++) {
+    //   email += possible.charAt(Math.floor(Math.random() * possible.length));
+    // }
 
-    this.selectedMailbox = email;
+    this.selectedMailbox = generateName().replace(' ', '-');
   }
 
 }

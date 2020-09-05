@@ -3746,6 +3746,7 @@ const api_service_1 = __webpack_require__(/*! ../../core/services/api.service */
 const Observable_1 = __webpack_require__(/*! rxjs/internal/Observable */ "rxjs/internal/Observable");
 const router_1 = __webpack_require__(/*! @angular/router */ "@angular/router");
 const config_service_1 = __webpack_require__(/*! ../../core/services/config.service */ "./client/app/core/services/config.service.ts");
+const generateName = __webpack_require__(/*! sillyname */ "sillyname");
 class MailboxSelectorComponent {
     constructor(apiService, router, deviceService) {
         this.apiService = apiService;
@@ -3779,12 +3780,12 @@ class MailboxSelectorComponent {
         this.router.navigateByUrl('/mailbox/' + this.selectedMailbox.toLowerCase().split('@')[0]);
     }
     generateEmail() {
-        let email = '';
-        const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
-        for (let i = 0; i < 8; i++) {
-            email += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        this.selectedMailbox = email;
+        // let email = '';
+        // const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
+        // for (let i = 0; i < 8; i++) {
+        //   email += possible.charAt(Math.floor(Math.random() * possible.length));
+        // }
+        this.selectedMailbox = generateName().replace(' ', '-');
     }
 }
 exports.MailboxSelectorComponent = MailboxSelectorComponent;
@@ -5145,6 +5146,17 @@ module.exports = require("rxjs/internal/Subject");
 /***/ (function(module, exports) {
 
 module.exports = require("rxjs/operators");
+
+/***/ }),
+
+/***/ "sillyname":
+/*!****************************!*\
+  !*** external "sillyname" ***!
+  \****************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = require("sillyname");
 
 /***/ }),
 
