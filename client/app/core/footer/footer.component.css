@@ -15,6 +15,7 @@
   width: 100%;
   padding: 10px;
   display: -webkit-flex; /* Safari */
+  justify-content: space-between;
 }
 
 /*background: -webkit-linear-gradient(left top, #b3e5fc, #8AC5FC); !* For Safari 5.1 to 6.0 *!*/
