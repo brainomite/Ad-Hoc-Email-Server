@@ -37,11 +37,15 @@ export class MailboxSelectorComponent implements OnInit {
   @Input() color = 'accent';
   @Input() isInline = true;
   properties: any = {allowedDomains: ['']};
-  badValue: boolean;
+  missingText: boolean;
+  hasAt: boolean;
+  forbidden: boolean;
 
   constructor(public apiService: ApiService, private router: Router, public deviceService: DeviceService) {
     this.autoCompleteControl = new FormControl();
-    this.badValue = false;
+    this.missingText = false;
+    this.hasAt = false;
+    this.forbidden = false;
   }
 
   ngOnInit(): void {
@@ -71,8 +75,14 @@ export class MailboxSelectorComponent implements OnInit {
     const {selectedMailbox} = this
     if (this.isValid(selectedMailbox)) {
       this.router.navigateByUrl('/mailbox/' + selectedMailbox.toLowerCase().split('@')[0]);
-    } else {
-      this.badValue = true
+    } else if (!this.missingText && !this.hasAt && !this.forbidden) {
+      if (!selectedMailbox.trim()) {
+        this.missingText = true;
+      } else if (selectedMailbox.includes('@')) {
+        this.hasAt = true;
+      } else {
+        this.forbidden = true;
+      }
     }
   }
 
@@ -89,9 +99,8 @@ export class MailboxSelectorComponent implements OnInit {
   }
 
   validateEmail(){
-    console.log('validating ' + this.selectedMailbox + ':' + !this.isValid(this.selectedMailbox))
-    if (this.isValid(this.selectedMailbox)){
-      this.badValue = false
-    }
+    this.missingText = false;
+    this.hasAt = false;
+    this.forbidden = false;
   }
 }

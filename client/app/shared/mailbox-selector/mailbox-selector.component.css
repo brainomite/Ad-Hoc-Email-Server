@@ -37,41 +37,77 @@ input::placeholder {
   color: #b0bec9;
 }
 
-.submit-tooltip {
+.tooltips {
   position: relative;
   display: inline-block;
 }
 
 /* Tooltip text */
-#submit-tooltiptext {
+/* #submit-tooltiptext {
   visibility: hidden;
-  width: 260px;
+  width: 180px;
   background-color: red;
   color: #fff;
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
 
-  /* Position the tooltip text - see examples below! */
   position: absolute;
   z-index: 1;
   top: 100%;
-  left: 84%;
-  margin-left: -60px;
+  right: 40%;
+  margin-right: -30px;
 }
 
 #submit-tooltiptext::after{
   content: " ";
   position: absolute;
-  bottom: 100%;  /* At the top of the tooltip */
-  left: 14%;
+  top: 100%;
+  left: 50%;
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent red transparent;
+  border-color: red transparent transparent transparent;
+}
+
+
+#submit-tooltiptext.submit-tooltip-error {
+  visibility: visible;
+} */
+
+
+#missing-text-tooltiptext, #at-tooltiptext, #forbidden-tooltiptext {
+  visibility: hidden;
+  /* width: 180px; */
+  background-color: orangered;
+  color: #fff;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  right: 40%;
+  margin-right: -30px;
+}
+
+#missing-text-tooltiptext::after,
+#at-tooltiptext::after,
+#forbidden-tooltiptext::after {
+  content: " ";
+  position: absolute;
+  top: 100%;
+  left: 25%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: orangered transparent transparent transparent;
 }
 
 /* Show the tooltip text when you mouse over the tooltip container */
-#submit-tooltiptext.submit-tooltip-error {
+#missing-text-tooltiptext.missing-text-tooltip-error,
+#at-tooltiptext.at-tooltip-error,
+#forbidden-tooltiptext.forbidden-tooltip-error {
   visibility: visible;
 }
