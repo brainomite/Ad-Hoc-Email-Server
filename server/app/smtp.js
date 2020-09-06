@@ -111,7 +111,7 @@ function startSTMPServer(properties, db, io) {
 
 
 function validateAddress(address, allowedDomains) {
-  if (emailBad(address.split('@')[0])) {
+  if (emailBad(address.address.split('@')[0])) {
     return false;
   }
   // return true always if: a) allowedDomains is empty or b) null or c) properties.json only has my.domain.com
