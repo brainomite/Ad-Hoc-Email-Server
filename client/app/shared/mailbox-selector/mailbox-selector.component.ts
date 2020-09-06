@@ -6,7 +6,7 @@ import {ApiService} from '../../core/services/api.service';
 import {Observable} from 'rxjs/internal/Observable';
 import {Router} from '@angular/router';
 import {ConfigService} from '../../core/services/config.service';
-import {emailBad} from "../../core/services/isEmailBad";
+const {emailBad} = require("../../core/services/isEmailBad");
 
 declare function require(name: string)
 const generateName = require('sillyname');
