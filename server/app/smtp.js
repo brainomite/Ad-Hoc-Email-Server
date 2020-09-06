@@ -32,7 +32,9 @@ function startSTMPServer(properties, db, io) {
         logger.error(address.address + ' is not allowed!');
         const username = address.address.split('@')[0];
         if (emailBad(username)) {
-          return callback(new Error('Username ' + username + ' is not allowed to receive mail'));
+          err = new Error('The message was rejected by the recipient address')
+          err.responseCode = 541
+          return callback(new Error('Requested action not taken: mailbox unavailable'));
         } else {
           return callback(new Error('Only the domains ' + [JSON.stringify(properties.allowedDomains)] + ' are allowed to receive mail'));
         }
