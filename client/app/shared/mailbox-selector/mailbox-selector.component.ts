@@ -6,9 +6,11 @@ import {ApiService} from '../../core/services/api.service';
 import {Observable} from 'rxjs/internal/Observable';
 import {Router} from '@angular/router';
 import {ConfigService} from '../../core/services/config.service';
+import {emailBad} from "../../core/services/isEmailBad";
 
 declare function require(name: string)
 const generateName = require('sillyname');
+
 
 const copyToClipboard = str => {
   const el = document.createElement('textarea');
@@ -35,9 +37,11 @@ export class MailboxSelectorComponent implements OnInit {
   @Input() color = 'accent';
   @Input() isInline = true;
   properties: any = {allowedDomains: ['']};
+  badValue: boolean;
 
   constructor(public apiService: ApiService, private router: Router, public deviceService: DeviceService) {
     this.autoCompleteControl = new FormControl();
+    this.badValue = false;
   }
 
   ngOnInit(): void {
@@ -62,21 +66,32 @@ export class MailboxSelectorComponent implements OnInit {
   }
 
   clickSubmit() {
-    this.router.navigateByUrl('/mailbox/' + this.selectedMailbox.toLowerCase().split('@')[0]);
+    // window.alert('calling emailBad with: ' + this.selectedMailbox)
+    // window.alert('email bad is: ' + emailBad(this.selectedMailbox))
+    const {selectedMailbox} = this
+    if (this.isValid(selectedMailbox)) {
+      this.router.navigateByUrl('/mailbox/' + selectedMailbox.toLowerCase().split('@')[0]);
+    } else {
+      this.badValue = true
+    }
   }
 
   generateEmail() {
-    // let email = '';
-    // const possible = 'abcdefghijklmnopqrstuvwxyz0123456789';
-
-    // for (let i = 0; i < 8; i++) {
-    //   email += possible.charAt(Math.floor(Math.random() * possible.length));
-    // }
-
     this.selectedMailbox = generateName().replace(' ', '-');
   }
+
   copyEmail(){
     copyToClipboard(this.selectedMailbox.toLowerCase() + '@' + this.properties.allowedDomains[0])
   }
 
+  isValid(username: string) {
+    return username.trim() && !emailBad(username) && !username.includes('@')
+  }
+
+  validateEmail(){
+    console.log('validating ' + this.selectedMailbox + ':' + !this.isValid(this.selectedMailbox))
+    if (this.isValid(this.selectedMailbox)){
+      this.badValue = false
+    }
+  }
 }

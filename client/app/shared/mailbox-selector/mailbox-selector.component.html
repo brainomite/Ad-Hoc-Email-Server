@@ -20,7 +20,8 @@
              [formControl]="autoCompleteControl"
              [(ngModel)]="selectedMailbox"
              placeholder="Mailbox"
-             (keyup.enter)="clickSubmit()">
+             (keyup.enter)="clickSubmit()"
+             (input)="validateEmail()" >
       <span matSuffix class="suffix">@{{properties.allowedDomains[0]}}</span>
     </mat-form-field>
     <mat-autocomplete #auto="matAutocomplete" >
@@ -28,7 +29,11 @@
         {{ mailbox }}
       </mat-option>
     </mat-autocomplete>
-    <button mat-button routerLink="/mailbox/{{selectedMailbox | trimDomain}}">Submit</button>
+    <div class="submit-tooltip">
+      <!-- <button mat-button routerLink="/mailbox/{{selectedMailbox | trimDomain}}">Submit</button> -->
+      <button mat-button (click)="clickSubmit()">Submit</button>
+      <span id="submit-tooltiptext" [ngClass]="badValue ? 'submit-tooltip-error' : 'dummy'">Can't open this mailbox, fix the error</span>
+    </div>
     <button mat-button (click)="generateEmail()">Generate</button>
     <button mat-button (click)="copyEmail()">Copy email</button>
   </div>
