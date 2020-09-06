@@ -32,7 +32,7 @@ function startSTMPServer(properties, db, io) {
         logger.error(address.address + ' is not allowed!');
         const username = address.address.split('@')[0];
         if (emailBad(username)) {
-          err = new Error('The message was rejected by the recipient address');
+          err = new Error('');
           err.responseCode = 541;
           return callback(err);
         } else {
