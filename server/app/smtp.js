@@ -33,7 +33,7 @@ function startSTMPServer(properties, db, io) {
         const username = address.address.split('@')[0];
         if (emailBad(username)) {
           err = new Error('The recipient address rejected your message');
-          err.responseCode = 541;
+          // err.responseCode = 541;
           return callback(err);
         } else {
           return callback(new Error('Only the domains ' + [JSON.stringify(properties.allowedDomains)] + ' are allowed to receive mail'));
