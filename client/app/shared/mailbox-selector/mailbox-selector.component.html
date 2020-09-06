@@ -16,15 +16,18 @@
   <div class="background">
     <div class="tooltips">
       <mat-form-field color="primary">
-        <input type="text" matInput
+        <input id="username-input" type="text" matInput
                [matAutocomplete]="auto"
                [formControl]="autoCompleteControl"
                [(ngModel)]="selectedMailbox"
                placeholder="Mailbox"
                (keyup.enter)="clickSubmit()"
                (input)="validateEmail()" >
-        <span matSuffix class="suffix">@{{properties.allowedDomains[0]}}</span>
+        <!-- <span matSuffix class="suffix">@{{properties.allowedDomains[0]}}</span> -->
       </mat-form-field>
+      <select matSuffix class="suffix" [(ngModel)]="selectedDomain" >
+        <option *ngFor="let domain of atDomains" value="{{domain}}">{{domain}}</option>
+      </select>
       <span id="missing-text-tooltiptext" [ngClass]="missingText ? 'missing-text-tooltip-error' : 'dummy'">Please enter an email</span>
       <span id="at-tooltiptext" [ngClass]="hasAt ? 'at-tooltip-error' : 'dummy'">'@' is not permited</span>
       <span id="forbidden-tooltiptext" [ngClass]="forbidden ? 'forbidden-tooltip-error' : 'dummy'">This address is forbidden</span>

@@ -36,10 +36,12 @@ export class MailboxSelectorComponent implements OnInit {
   @Input() selectedMailbox = '';
   @Input() color = 'accent';
   @Input() isInline = true;
+  @Input() selectedDomain = '@' + ConfigService.properties.allowedDomains[0];
   properties: any = {allowedDomains: ['']};
   missingText: boolean;
   hasAt: boolean;
   forbidden: boolean;
+  atDomains: string[];
 
   constructor(public apiService: ApiService, private router: Router, public deviceService: DeviceService) {
     this.autoCompleteControl = new FormControl();
@@ -53,7 +55,7 @@ export class MailboxSelectorComponent implements OnInit {
     pipe(debounceTime(300)).subscribe(val => {
       this.filterMailboxes(val).subscribe(result => this.mailboxes = result);
     });
-
+    this.atDomains = ConfigService.properties.allowedDomains.map(domain => '@' + domain)
     this.properties = ConfigService.properties;
   }
 
@@ -74,7 +76,8 @@ export class MailboxSelectorComponent implements OnInit {
     // window.alert('email bad is: ' + emailBad(this.selectedMailbox))
     const {selectedMailbox} = this
     if (this.isValid(selectedMailbox)) {
-      this.router.navigateByUrl('/mailbox/' + selectedMailbox.toLowerCase().split('@')[0]);
+      // this.router.navigateByUrl('/mailbox/' + selectedMailbox.toLowerCase().split('@')[0]);
+      this.router.navigateByUrl('/mailbox/' + this.fullAddress());
     } else if (!this.missingText && !this.hasAt && !this.forbidden) {
       if (!selectedMailbox.trim()) {
         this.missingText = true;
@@ -90,8 +93,12 @@ export class MailboxSelectorComponent implements OnInit {
     this.selectedMailbox = generateName().replace(' ', '-');
   }
 
+  fullAddress(){
+    return this.selectedMailbox + this.selectedDomain
+  }
+
   copyEmail(){
-    copyToClipboard(this.selectedMailbox.toLowerCase() + '@' + this.properties.allowedDomains[0])
+    copyToClipboard(this.fullAddress())
   }
 
   isValid(username: string) {

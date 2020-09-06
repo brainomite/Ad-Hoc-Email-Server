@@ -120,7 +120,7 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
   }
 
   getEmptyMailboxText(): string {
-    return this.mailbox + '@' + ConfigService.properties.allowedDomains[0];
+    return this.mailbox;
   }
 
   navigateToMailbox() {

@@ -78,7 +78,8 @@ function startSTMPServer(properties, db, io) {
               try {
                 const nameAndDomain = recipient.address.split('@');
                 if (properties.allowedDomains.indexOf(nameAndDomain[1].toLowerCase()) > -1) {
-                  db.collection('mailboxes').updateOne({ 'name': nameAndDomain[0].toLowerCase() }, {
+                  // db.collection('mailboxes').updateOne({ 'name': nameAndDomain[0].toLowerCase() }, {
+                  db.collection('mailboxes').updateOne({ 'name': recipient.address.toLowerCase() }, {
                     $push: {
                       'emails': {
                         'emailId': mail._id,
