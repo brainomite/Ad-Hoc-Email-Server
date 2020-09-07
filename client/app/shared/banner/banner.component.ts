@@ -11,7 +11,7 @@ export class BannerComponent implements OnInit {
 
   @Input() showMailboxSelector = true;
   @Input() h2 = 'Ad Hoc Disposable Temporary Email';
-  @Input() h1 = 'The temp mail service to keep your real mailbox safe';
+  @Input() h1 = 'Welcome to the Ad Hoc EMail Monster';
 
   // constructor(           iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
   //   iconRegistry.addSvgIcon(

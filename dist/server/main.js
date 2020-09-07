@@ -4844,7 +4844,7 @@ class BannerComponent {
     constructor() {
         this.showMailboxSelector = true;
         this.h2 = 'Ad Hoc Disposable Temporary Email';
-        this.h1 = 'The temp mail service to keep your real mailbox safe';
+        this.h1 = 'Welcome to the Ad Hoc EMail Monster';
     }
     // constructor(           iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
     //   iconRegistry.addSvgIcon(
