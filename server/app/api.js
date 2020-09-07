@@ -14,7 +14,7 @@ const mailTester = require('./mailTester');
 router.get('/alive', (req, res) => {
   mailTester.sendTestEmail(req.properties);
   res.status(200).send({
-    success:true,
+    success: true,
     api: true,
     smtp: true,
     db: true
@@ -41,7 +41,7 @@ router.get('/emailCount', (req, res, next) => {
     if (!emailCount) {
       return res.status(200).json({ count: 0 })
     }
-    return res.status(200).json({count: emailCount.count, since: emailCount.since});
+    return res.status(200).json({ count: emailCount.count, since: emailCount.since });
   });
 });
 
@@ -50,13 +50,13 @@ router.get('/emailCount', (req, res, next) => {
  */
 router.post('/auth/token', (req, res, next) => {
   // if a token exists for the ip and is not expired
-  req.db.collection('tokens').findOne({'ip': req.ip},
+  req.db.collection('tokens').findOne({ 'ip': req.ip },
     function (err, result) {
       if (err) {
-        return res.status(500).json({error: err.message});
+        return res.status(500).json({ error: err.message });
       }
       if (result) {
-        jwt.verify(result.token, req.properties.jwtSecret, function(err, decoded) {
+        jwt.verify(result.token, req.properties.jwtSecret, function (err, decoded) {
           if (err) {
             logger.info('failed to verify token... renewing.');
             return auth.createNewToken(req, res);
@@ -83,26 +83,26 @@ router.post('/auth/token', (req, res, next) => {
 router.get('/mailbox/:mailbox/email/:emailId/attachments/:filename', (req, res) => {
   try {
     const objectId = ObjectID.createFromHexString(req.params.emailId);
-    req.db.collection('emails').findOne({'_id': objectId}, function(err, mail) {
-        const attachmentFound = mail.attachments.filter(attachment => {
-          return attachment.filename === decodeURI(req.params.filename);
-        });
-        // if not found, return 404
+    req.db.collection('emails').findOne({ '_id': objectId }, function (err, mail) {
+      const attachmentFound = mail.attachments.filter(attachment => {
+        return attachment.filename === decodeURI(req.params.filename);
+      });
+      // if not found, return 404
       if (attachmentFound.length === 0) {
-        return res.status(404).send({error: 'FILE NOT FOUND'});
+        return res.status(404).send({ error: 'FILE NOT FOUND' });
       }
 
-        // console.log(attachmentFound);
-        res.setHeader('Content-Type', attachmentFound[0].contentType);
-        // res.setHeader('Content-disposition', 'attachment;filename=' + attachmentsFound[0].filename);
-        res.setHeader('Content-Length', attachmentFound[0].size);
-        res.writeHead(200);
-        res.end(attachmentFound[0].content.buffer);
-      }
+      // console.log(attachmentFound);
+      res.setHeader('Content-Type', attachmentFound[0].contentType);
+      // res.setHeader('Content-disposition', 'attachment;filename=' + attachmentsFound[0].filename);
+      res.setHeader('Content-Length', attachmentFound[0].size);
+      res.writeHead(200);
+      res.end(attachmentFound[0].content.buffer);
+    }
     );
-  } catch(e) {
+  } catch (e) {
     console.log(e);
-    return res.status(404).send({error: err});
+    return res.status(404).send({ error: err });
   }
 });
 
@@ -120,25 +120,26 @@ router.post('/mailbox/autocomplete', (req, res) => {
   if (!req.properties.allowAutocomplete) {
     return res.status(200).send([]);
   }
-  req.db.collection('mailboxes').find({'name': {'$regex' : '^' + req.body.prefix, '$options' : 'i'}},
-    {'name': 1}).toArray(function (err, mailboxes) {
-    if (err) {
-      return res.status(500).json(err);
-    }
-    return res.status(200).send(mailboxes.map(mailbox => mailbox.name));
-  });
+  req.db.collection('mailboxes').find({ 'name': { '$regex': '^' + req.body.prefix, '$options': 'i' } },
+    { 'name': 1 }).toArray(function (err, mailboxes) {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      return res.status(200).send(mailboxes.map(mailbox => mailbox.name));
+    });
 });
 
 /**
  * returns a list of mail metadata bojects in a specific mailbox
  */
 router.get('/mailbox/:mailbox/email', (req, res, next) => {
-  req.db.collection('mailboxes').findOne({'name': req.params.mailbox}, function (err, mailbox) {
+  req.db.collection('mailboxes').findOne({ 'name': req.params.mailbox }, function (err, mailbox) {
     if (err) {
       return res.status(500).json(err);
     }
     if (!mailbox || mailbox.emails.length === 0) {
-      return res.status(404).send({error: 'MAILBOX IS EMPTY!'});
+      // return res.status(404).send({error: 'MAILBOX IS EMPTY!'});
+      return res.status(200).send([]);
     }
     res.status(200).send(mailbox.emails);
   });
@@ -152,10 +153,10 @@ router.get('/mailbox/:mailbox/email/:emailId', (req, res) => {
   try {
     objectId = ObjectID.createFromHexString(req.params.emailId);
   }
-  catch(error) {
-    return res.status(404).json({ error: 'EMAIL NOT FOUND'});
+  catch (error) {
+    return res.status(404).json({ error: 'EMAIL NOT FOUND' });
   }
-  req.db.collection('emails').findOne({'_id': objectId}, {
+  req.db.collection('emails').findOne({ '_id': objectId }, {
     'from': 1,
     'to': 1,
     'cc': 1,
@@ -167,12 +168,12 @@ router.get('/mailbox/:mailbox/email/:emailId', (req, res) => {
     'attachments.filename': 1
   }, function (err, doc) {
     if (err) {
-      return res.status(500).json({error: err});
+      return res.status(500).json({ error: err });
     }
-    if(doc) {
+    if (doc) {
       return res.status(200).json(doc);
     } else {
-      return res.status(404).json({ error: 'EMAIL NOT FOUND'});
+      return res.status(404).json({ error: 'EMAIL NOT FOUND' });
     }
   });
 });
@@ -183,41 +184,41 @@ router.get('/mailbox/:mailbox/email/:emailId', (req, res) => {
 router.patch('/mailbox/:mailbox/email/:emailId', (req, res) => {
 
   const objectId = ObjectID.createFromHexString(req.params.emailId);
-  req.db.collection('mailboxes').updateOne({ 'name': req.params.mailbox, 'emails.emailId' : objectId},
-    {$set: {'emails.$.isRead': req.body.isRead}},
+  req.db.collection('mailboxes').updateOne({ 'name': req.params.mailbox, 'emails.emailId': objectId },
+    { $set: { 'emails.$.isRead': req.body.isRead } },
     function (err, result) {
-    if (err) {
-      return res.status(500).json({error: err});
-    }
-    return res.status(200).json(result);
-  });
+      if (err) {
+        return res.status(500).json({ error: err });
+      }
+      return res.status(200).json(result);
+    });
 });
 
 
 router.delete('/mailbox/:mailbox/email/:emailId', (req, res) => {
   const objectId = ObjectID.createFromHexString(req.params.emailId);
   req.db.collection('mailboxes').updateOne(
-    { 'name' : req.params.mailbox },
-    {$pull : {'emails' : {'emailId': objectId}}}
+    { 'name': req.params.mailbox },
+    { $pull: { 'emails': { 'emailId': objectId } } }
     , function (err, result) {
       if (err) {
-        return res.status(500).json({error: err});
+        return res.status(500).json({ error: err });
       }
-      if(result.modifiedCount === 0) {
-        return res.status(404).json({success: false, message: 'EMAIL NOT FOUND'});
+      if (result.modifiedCount === 0) {
+        return res.status(404).json({ success: false, message: 'EMAIL NOT FOUND' });
       }
-      return res.json({success: true});
+      return res.json({ success: true });
 
     }
   );
 });
 
 router.delete('/mailbox/:mailbox', (req, res) => {
-  req.db.collection('mailboxes').remove({'name': req.params.mailbox}, function(err, result) {
+  req.db.collection('mailboxes').remove({ 'name': req.params.mailbox }, function (err, result) {
     if (err) {
-      return res.status(500).send({error: err, succes: false});
+      return res.status(500).send({ error: err, succes: false });
     }
-    return res.json({success: true});
+    return res.json({ success: true });
   });
 });
 

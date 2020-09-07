@@ -7,6 +7,7 @@ import {ConfigService} from '../../core/services/config.service';
 import {SeoService} from '../../core/services/seo.service';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {DeviceService} from '../../core/services/device.service';
+import { ɵHttpInterceptingHandler } from '@angular/common/http';
 
 const copyToClipboard = str => {
   const el = document.createElement('textarea');
@@ -34,6 +35,7 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
   emailId: string;
   loading = true;
   copied = false;
+  intervalId: any;
 
   constructor(private apiService: ApiService,
       private route: ActivatedRoute,
@@ -68,13 +70,29 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
       this.selectedEmail = null;
       console.error(err);
     });
+    const refreshEmailList = () => {
+      if (this.mailbox) {
+        this.apiService.listMailboxEmails(this.mailbox)
+      }
+    }
+    if (!this.emailId) {
+      this.intervalId = setInterval(() => {
+        refreshEmailList();
+      }, 2500);
+    }
   }
 
-  ngOnDestroy(): void {
+  unsubscribe(): void {
     this.paramsSub.unsubscribe();
     this.emailsSub.unsubscribe();
   }
 
+  ngOnDestroy(): void {
+    if (this.intervalId){
+      clearInterval(this.intervalId)
+    }
+    this.unsubscribe();
+  }
 
   selectEmail(emailInfo: EmailInfo) {
     if (emailInfo) {
@@ -91,6 +109,9 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
   }
 
   clickedEmail(email: EmailInfo) {
+    if (this.intervalId) {
+      clearInterval(this.intervalId)
+    }
     this.selectEmail(email);
     this.router.navigateByUrl('/mailbox/' + this.mailbox + '/' + email.emailId);
   }

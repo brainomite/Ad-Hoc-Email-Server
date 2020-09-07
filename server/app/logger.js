@@ -1,7 +1,8 @@
-var winston =  require('winston');
+var winston = require('winston');
 
 const logger = winston.createLogger({
-  level: 'info',
+  // level: 'info',
+  level: 'warning',
   format: winston.format.json(),
   transports: [
     //
@@ -18,7 +19,7 @@ const logger = winston.createLogger({
 });
 
 module.exports = logger;
-module.exports.stream =  {
+module.exports.stream = {
   write: function (message, encoding) {
     logger.info(message);
   }

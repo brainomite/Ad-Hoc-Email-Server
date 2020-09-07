@@ -4055,7 +4055,7 @@ function View_MailboxEmailsListComponent_5(_l) { return i1.ɵvid(0, [(_l()(), i1
 function View_MailboxEmailsListComponent_7(_l) { return i1.ɵvid(0, [(_l()(), i1.ɵeld(0, 0, null, null, 33, "div", [["class", "ahem-empty-list"]], null, null, null, null, null)), (_l()(), i1.ɵeld(1, 0, null, null, 9, "div", [], null, null, null, null, null)), (_l()(), i1.ɵted(2, null, [" This mailbox is currently empty. Emails sent to ", " "])), (_l()(), i1.ɵeld(3, 0, null, null, 5, "div", [["class", "tooltip"]], null, [[null, "click"]], function (_v, en, $event) { var ad = true; var _co = _v.component; if (("click" === en)) {
         var pd_0 = (_co.copyEmail() !== false);
         ad = (pd_0 && ad);
-    } return ad; }, null, null)), (_l()(), i1.ɵeld(4, 0, null, null, 0, "img", [["clipboard", ""], ["src", "https://img.icons8.com/material-outlined/24/000000/add-to-clipboard.png"]], null, null, null, null, null)), (_l()(), i1.ɵeld(5, 0, null, null, 3, "span", [["class", "tooltiptext"]], null, null, null, null, null)), i1.ɵprd(512, null, i5.ɵNgClassImpl, i5.ɵNgClassR2Impl, [i1.IterableDiffers, i1.KeyValueDiffers, i1.ElementRef, i1.Renderer2]), i1.ɵdid(7, 278528, null, 0, i5.NgClass, [i5.ɵNgClassImpl], { klass: [0, "klass"], ngClass: [1, "ngClass"] }, null), (_l()(), i1.ɵted(-1, null, ["Copied! "])), (_l()(), i1.ɵted(-1, null, [" will be listed here. "])), (_l()(), i1.ɵeld(10, 0, null, null, 0, "br", [], null, null, null, null, null)), (_l()(), i1.ɵeld(11, 0, null, null, 0, "img", [["class", "fumbled"], ["src", "assets/svg/fumbled-bluish.svg"]], null, null, null, null, null)), (_l()(), i1.ɵeld(12, 0, null, null, 21, "div", [], null, null, null, null, null)), (_l()(), i1.ɵeld(13, 0, null, null, 1, "p", [], null, null, null, null, null)), (_l()(), i1.ɵted(14, null, [" To continue, send an email to: ", ", or use one of the following links: "])), (_l()(), i1.ɵeld(15, 0, null, null, 18, "ul", [], null, null, null, null, null)), (_l()(), i1.ɵeld(16, 0, null, null, 4, "li", [], null, null, null, null, null)), (_l()(), i1.ɵeld(17, 0, null, null, 3, "a", [], [[1, "target", 0], [8, "href", 4]], [[null, "click"]], function (_v, en, $event) { var ad = true; if (("click" === en)) {
+    } return ad; }, null, null)), (_l()(), i1.ɵeld(4, 0, null, null, 0, "img", [["clipboard", ""], ["src", "https://img.icons8.com/material-outlined/24/000000/add-to-clipboard.png"]], null, null, null, null, null)), (_l()(), i1.ɵeld(5, 0, null, null, 3, "span", [["class", "tooltiptext"]], null, null, null, null, null)), i1.ɵprd(512, null, i5.ɵNgClassImpl, i5.ɵNgClassR2Impl, [i1.IterableDiffers, i1.KeyValueDiffers, i1.ElementRef, i1.Renderer2]), i1.ɵdid(7, 278528, null, 0, i5.NgClass, [i5.ɵNgClassImpl], { klass: [0, "klass"], ngClass: [1, "ngClass"] }, null), (_l()(), i1.ɵted(-1, null, ["Copied! "])), (_l()(), i1.ɵted(-1, null, [" will be listed here automagically once they arrive, NO need to refresh the page. "])), (_l()(), i1.ɵeld(10, 0, null, null, 0, "br", [], null, null, null, null, null)), (_l()(), i1.ɵeld(11, 0, null, null, 0, "img", [["class", "fumbled"], ["src", "assets/svg/fumbled-bluish.svg"]], null, null, null, null, null)), (_l()(), i1.ɵeld(12, 0, null, null, 21, "div", [], null, null, null, null, null)), (_l()(), i1.ɵeld(13, 0, null, null, 1, "p", [], null, null, null, null, null)), (_l()(), i1.ɵted(14, null, [" To continue, send an email to: ", ", or use one of the following links: "])), (_l()(), i1.ɵeld(15, 0, null, null, 18, "ul", [], null, null, null, null, null)), (_l()(), i1.ɵeld(16, 0, null, null, 4, "li", [], null, null, null, null, null)), (_l()(), i1.ɵeld(17, 0, null, null, 3, "a", [], [[1, "target", 0], [8, "href", 4]], [[null, "click"]], function (_v, en, $event) { var ad = true; if (("click" === en)) {
         var pd_0 = (i1.ɵnov(_v, 18).onClick($event.button, $event.ctrlKey, $event.metaKey, $event.shiftKey) !== false);
         ad = (pd_0 && ad);
     } return ad; }, null, null)), i1.ɵdid(18, 671744, null, 0, i21.RouterLinkWithHref, [i21.Router, i21.ActivatedRoute, i5.LocationStrategy], { routerLink: [0, "routerLink"] }, null), i1.ɵpad(19, 1), (_l()(), i1.ɵted(-1, null, [" AHEM Home "])), (_l()(), i1.ɵeld(21, 0, null, null, 4, "li", [], null, null, null, null, null)), (_l()(), i1.ɵeld(22, 0, null, null, 3, "a", [], [[1, "target", 0], [8, "href", 4]], [[null, "click"]], function (_v, en, $event) { var ad = true; if (("click" === en)) {
@@ -4146,10 +4146,26 @@ class MailboxEmailsListComponent {
             this.selectedEmail = null;
             console.error(err);
         });
+        const refreshEmailList = () => {
+            if (this.mailbox) {
+                this.apiService.listMailboxEmails(this.mailbox);
+            }
+        };
+        if (!this.emailId) {
+            this.intervalId = setInterval(() => {
+                refreshEmailList();
+            }, 2500);
+        }
     }
-    ngOnDestroy() {
+    unsubscribe() {
         this.paramsSub.unsubscribe();
         this.emailsSub.unsubscribe();
+    }
+    ngOnDestroy() {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
+        this.unsubscribe();
     }
     selectEmail(emailInfo) {
         if (emailInfo) {
@@ -4164,6 +4180,9 @@ class MailboxEmailsListComponent {
         return this.emailList.filter(email => email.emailId === emailId)[0];
     }
     clickedEmail(email) {
+        if (this.intervalId) {
+            clearInterval(this.intervalId);
+        }
         this.selectEmail(email);
         this.router.navigateByUrl('/mailbox/' + this.mailbox + '/' + email.emailId);
     }
