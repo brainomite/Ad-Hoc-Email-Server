@@ -2,100 +2,124 @@
  * Created by ogeva on 7/1/2017.
  */
 
-const SMTPServer = require('smtp-server').SMTPServer;
-const simpleParser = require('mailparser').simpleParser;
-const logger = require('./logger');
-const { isImportClause } = require('typescript');
-const { emailBad } = require("../../client/app/core/services/isEmailBad")
+const SMTPServer = require("smtp-server").SMTPServer;
+const simpleParser = require("mailparser").simpleParser;
+const logger = require("./logger");
+const { isImportClause } = require("typescript");
+const { emailBad } = require("../../client/app/core/services/isEmailBad");
 let mailserver;
 
 function startSTMPServer(properties, db, io) {
   const smtpPort = properties.smtpPort;
-  logger.info('starting smtp on ' + properties.smtpPort);
+  logger.info("starting smtp on " + properties.smtpPort);
   mailserver = new SMTPServer({
     logger: false,
     authOptional: true,
-    disabledCommands: ['AUTH'],
+    disabledCommands: ["AUTH"],
     disableReverseLookup: true,
     maxClients: 5,
     onConnect(session, callback) {
-      logger.info('SMTP Connect from ' + session.remoteAddress);
+      logger.info("SMTP Connect from " + session.remoteAddress);
       return callback(); // Accept the connection
     },
     onMailFrom(address, session, callback) {
-      logger.info('SMTP MAIL FROM: ' + address.address);
+      logger.info("SMTP MAIL FROM: " + address.address);
       return callback();
     },
     onRcptTo(address, session, callback) {
-      logger.info('SMTP RCPT TO: ' + address.address);
+      logger.info("SMTP RCPT TO: " + address.address);
       if (!validateAddress(address, properties.allowedDomains)) {
-        logger.error(address.address + ' is not allowed!');
-        const username = address.address.split('@')[0];
+        logger.error(address.address + " is not allowed!");
+        const username = address.address.split("@")[0];
         if (emailBad(username)) {
-          err = new Error('Non-existent email address');
+          err = new Error("Non-existent email address");
           err.responseCode = 550;
           return callback(err);
         } else {
-          return callback(new Error('Only the domains ' + [JSON.stringify(properties.allowedDomains)] + ' are allowed to receive mail'));
+          return callback(
+            new Error(
+              "Only the domains " +
+                [JSON.stringify(properties.allowedDomains)] +
+                " are allowed to receive mail"
+            )
+          );
         }
       }
       return callback(); // Accept the address
     },
     onData(stream, session, callback) {
-      logger.info('SMTP DATA start');
-      let mailDataString = '';
+      logger.info("SMTP DATA start");
+      let mailDataString = "";
 
-      stream.on('data', function (chunk) {
+      stream.on("data", function (chunk) {
         mailDataString += chunk;
       });
 
-      stream.on('end', function () {
-        logger.info('SMTP DATA end');
+      stream.on("end", function () {
+        logger.info("SMTP DATA end");
         simpleParser(mailDataString, (err, mail) => {
           mail.timestamp = new Date().getTime();
 
           // replace header map with one in which  . in the header keys are changed to _ due to insertion probelm
           mail.headers.forEach(function (value, key) {
-            if (key.includes('.')) {
-              const newkey = key.replace(/\./g, '_');
+            if (key.includes(".")) {
+              const newkey = key.replace(/\./g, "_");
               mail.headers.set(newkey, mail.headers.get(key));
               mail.headers.delete(key);
             }
           });
 
-          db.collection('emails').insertOne(mail, function (err1, result) {
-
+          db.collection("emails").insertOne(mail, function (err1, result) {
             if (err1) {
-              logger.error('Error in writing email to db!', err1);
+              logger.error("Error in writing email to db!", err1);
               return;
             }
 
             // count email
-            db.collection('emailCount').findOneAndUpdate({}, { $inc: { count: 1 }, $setOnInsert: { since: new Date().getTime() } }, { upsert: true, returnNewDocument: true }, (err, result) => {
-              io.emit('emailCount', result.value);
-            });
-            mail.to.value.forEach(recipient => {
+            db.collection("emailCount").findOneAndUpdate(
+              {},
+              {
+                $inc: { count: 1 },
+                $setOnInsert: { since: new Date().getTime() },
+              },
+              { upsert: true, returnNewDocument: true },
+              (err, result) => {
+                io.emit("emailCount", result.value);
+              }
+            );
+            mail.to.value.forEach((recipient) => {
               try {
-                const nameAndDomain = recipient.address.split('@');
-                if (properties.allowedDomains.indexOf(nameAndDomain[1].toLowerCase()) > -1) {
+                const nameAndDomain = recipient.address.split("@");
+                if (
+                  properties.allowedDomains.indexOf(
+                    nameAndDomain[1].toLowerCase()
+                  ) > -1
+                ) {
+                  const address = recipient.address.toLowerCase();
                   // db.collection('mailboxes').updateOne({ 'name': nameAndDomain[0].toLowerCase() }, {
-                  db.collection('mailboxes').updateOne({ 'name': recipient.address.toLowerCase() }, {
-                    $push: {
-                      'emails': {
-                        'emailId': mail._id,
-                        'sender': mail.from.value[0],
-                        'subject': mail.subject,
-                        'timestamp': mail.timestamp,
-                        'isRead': false
+                  db.collection("mailboxes").updateOne(
+                    { name: address },
+                    {
+                      $push: {
+                        emails: {
+                          emailId: mail._id,
+                          sender: mail.from.value[0],
+                          subject: mail.subject,
+                          timestamp: mail.timestamp,
+                          isRead: false,
+                        },
+                      },
+                    },
+                    { upsert: true },
+                    function (err2, res) {
+                      if (err2) {
+                        logger.error("Error in writing to mailbox db", err2);
+                        return;
                       }
+                      logger.info("updated email content in db.");
+                      io.emit("emailReceived", { address });
                     }
-                  }, { upsert: true }, function (err2, res) {
-                    if (err2) {
-                      logger.error('Error in writing to mailbox db', err2);
-                      return;
-                    }
-                    logger.info('updated email content in db.');
-                  });
+                  );
                 }
               } catch (e) {
                 logger.error(e);
@@ -105,39 +129,41 @@ function startSTMPServer(properties, db, io) {
         });
         return callback();
       });
-    }
+    },
   });
 
-  mailserver.on('error', err => {
-    logger.error('Error %s', err.message);
+  mailserver.on("error", (err) => {
+    logger.error("Error %s", err.message);
   });
 
   mailserver.listen(smtpPort);
 
   return mailserver;
-};
-
+}
 
 function validateAddress(address, allowedDomains) {
-  if (emailBad(address.address.split('@')[0])) {
+  if (emailBad(address.address.split("@")[0])) {
     return false;
   }
   // return true always if: a) allowedDomains is empty or b) null or c) properties.json only has my.domain.com
-  if (!allowedDomains ||
-    (allowedDomains && allowedDomains.length ||
-      (allowedDomains && allowedDomains.length === 1 && allowedDomains[0] === 'my.domain.com')
-    )) {
+  if (
+    !allowedDomains ||
+    (allowedDomains && allowedDomains.length) ||
+    (allowedDomains &&
+      allowedDomains.length === 1 &&
+      allowedDomains[0] === "my.domain.com")
+  ) {
     return true;
   }
 
-
   let allowed = false;
 
-  allowedDomains.forEach(domain => {
+  allowedDomains.forEach((domain) => {
     // console.log(JSON.stringify(address.address.split('@')[1].toLowerCase()));
     // console.log(JSON.stringify(domain));
-    if (address.address.split('@')[1].toLowerCase().endsWith(domain.toLowerCase())) {
-
+    if (
+      address.address.split("@")[1].toLowerCase().endsWith(domain.toLowerCase())
+    ) {
       allowed = true;
     }
   });
@@ -147,6 +173,4 @@ function validateAddress(address, allowedDomains) {
 module.exports = startSTMPServer;
 module.exports.close = () => {
   mailserver.close(callback);
-}
-
-
+};

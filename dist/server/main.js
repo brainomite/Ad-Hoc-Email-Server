@@ -2718,6 +2718,7 @@ class SocketService {
         this.http = http;
         this.platformId = platformId;
         this.emailCount = new Subject_1.Subject();
+        this.lastEmailReceivedFrom = new Subject_1.Subject();
         this.baseUri = origin || '';
         if (common_1.isPlatformBrowser(this.platformId)) { // check if this is runing in browser
             this.socket = socket_io_client_1.default(common_1.APP_BASE_HREF); // call io constructor
@@ -2727,6 +2728,7 @@ class SocketService {
     }
     initSocket() {
         this.socket.on('emailCount', count => this.emailCount.next(count));
+        this.socket.on('emailReceived', address => this.lastEmailReceivedFrom.next(address));
     }
 }
 SocketService.ngInjectableDef = i0.ɵɵdefineInjectable({ factory: function SocketService_Factory() { return new SocketService(i0.ɵɵinject(i1.HttpClient), i0.ɵɵinject(i2.APP_BASE_HREF, 8), i0.ɵɵinject(i0.PLATFORM_ID)); }, token: SocketService, providedIn: "root" });
@@ -4033,6 +4035,7 @@ const i26 = __webpack_require__(/*! ../../core/services/api.service */ "./client
 const i27 = __webpack_require__(/*! ../../core/services/seo.service */ "./client/app/core/services/seo.service.ts");
 const i28 = __webpack_require__(/*! ../../core/services/device.service */ "./client/app/core/services/device.service.ts");
 const i29 = __webpack_require__(/*! ./mailbox-emails-list.component */ "./client/app/mailbox/mailbox-emails-list/mailbox-emails-list.component.ts");
+const i30 = __webpack_require__(/*! ../../core/services/socket.service */ "./client/app/core/services/socket.service.ts");
 var styles_MailboxEmailsListComponent = [i0.styles];
 var RenderType_MailboxEmailsListComponent = i1.ɵcrt({ encapsulation: 0, styles: styles_MailboxEmailsListComponent, data: {} });
 exports.RenderType_MailboxEmailsListComponent = RenderType_MailboxEmailsListComponent;
@@ -4070,7 +4073,7 @@ function View_MailboxEmailsListComponent_8(_l) { return i1.ɵvid(0, [(_l()(), i1
 function View_MailboxEmailsListComponent_3(_l) { return i1.ɵvid(0, [(_l()(), i1.ɵeld(0, 0, null, null, 4, "div", [["class", "ahem-centered ahem-overflow"]], null, null, null, null, null)), (_l()(), i1.ɵand(16777216, null, null, 1, null, View_MailboxEmailsListComponent_4)), i1.ɵdid(2, 16384, null, 0, i5.NgIf, [i1.ViewContainerRef, i1.TemplateRef], { ngIf: [0, "ngIf"] }, null), (_l()(), i1.ɵand(16777216, null, null, 1, null, View_MailboxEmailsListComponent_8)), i1.ɵdid(4, 16384, null, 0, i5.NgIf, [i1.ViewContainerRef, i1.TemplateRef], { ngIf: [0, "ngIf"] }, null)], function (_ck, _v) { var _co = _v.component; var currVal_0 = !_co.selectedEmail; _ck(_v, 2, 0, currVal_0); var currVal_1 = _co.selectedEmail; _ck(_v, 4, 0, currVal_1); }, null); }
 function View_MailboxEmailsListComponent_0(_l) { return i1.ɵvid(0, [(_l()(), i1.ɵand(16777216, null, null, 1, null, View_MailboxEmailsListComponent_1)), i1.ɵdid(1, 16384, null, 0, i5.NgIf, [i1.ViewContainerRef, i1.TemplateRef], { ngIf: [0, "ngIf"] }, null), (_l()(), i1.ɵand(16777216, null, null, 1, null, View_MailboxEmailsListComponent_2)), i1.ɵdid(3, 16384, null, 0, i5.NgIf, [i1.ViewContainerRef, i1.TemplateRef], { ngIf: [0, "ngIf"] }, null), (_l()(), i1.ɵand(16777216, null, null, 1, null, View_MailboxEmailsListComponent_3)), i1.ɵdid(5, 16384, null, 0, i5.NgIf, [i1.ViewContainerRef, i1.TemplateRef], { ngIf: [0, "ngIf"] }, null)], function (_ck, _v) { var _co = _v.component; var currVal_0 = _co.selectedEmail; _ck(_v, 1, 0, currVal_0); var currVal_1 = _co.loading; _ck(_v, 3, 0, currVal_1); var currVal_2 = !_co.loading; _ck(_v, 5, 0, currVal_2); }, null); }
 exports.View_MailboxEmailsListComponent_0 = View_MailboxEmailsListComponent_0;
-function View_MailboxEmailsListComponent_Host_0(_l) { return i1.ɵvid(0, [(_l()(), i1.ɵeld(0, 0, null, null, 1, "app-mailbox-emails", [], null, null, null, View_MailboxEmailsListComponent_0, RenderType_MailboxEmailsListComponent)), i1.ɵdid(1, 245760, null, 0, i29.MailboxEmailsListComponent, [i26.ApiService, i21.ActivatedRoute, i21.Router, i28.DeviceService, i27.SeoService], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
+function View_MailboxEmailsListComponent_Host_0(_l) { return i1.ɵvid(0, [(_l()(), i1.ɵeld(0, 0, null, null, 1, "app-mailbox-emails", [], null, null, null, View_MailboxEmailsListComponent_0, RenderType_MailboxEmailsListComponent)), i1.ɵdid(1, 245760, null, 0, i29.MailboxEmailsListComponent, [i26.ApiService, i21.ActivatedRoute, i21.Router, i28.DeviceService, i27.SeoService, i30.SocketService], null, null)], function (_ck, _v) { _ck(_v, 1, 0); }, null); }
 exports.View_MailboxEmailsListComponent_Host_0 = View_MailboxEmailsListComponent_Host_0;
 var MailboxEmailsListComponentNgFactory = i1.ɵccf("app-mailbox-emails", i29.MailboxEmailsListComponent, View_MailboxEmailsListComponent_Host_0, {}, {}, []);
 exports.MailboxEmailsListComponentNgFactory = MailboxEmailsListComponentNgFactory;
@@ -4093,6 +4096,7 @@ const router_1 = __webpack_require__(/*! @angular/router */ "@angular/router");
 const api_service_1 = __webpack_require__(/*! ../../core/services/api.service */ "./client/app/core/services/api.service.ts");
 const seo_service_1 = __webpack_require__(/*! ../../core/services/seo.service */ "./client/app/core/services/seo.service.ts");
 const device_service_1 = __webpack_require__(/*! ../../core/services/device.service */ "./client/app/core/services/device.service.ts");
+const socket_service_1 = __webpack_require__(/*! ../../core/services/socket.service */ "./client/app/core/services/socket.service.ts");
 const copyToClipboard = str => {
     const el = document.createElement('textarea');
     el.value = str;
@@ -4107,12 +4111,13 @@ const copyToClipboard = str => {
 const ɵ0 = copyToClipboard;
 exports.ɵ0 = ɵ0;
 class MailboxEmailsListComponent {
-    constructor(apiService, route, router, deviceService, seoService) {
+    constructor(apiService, route, router, deviceService, seoService, socketService) {
         this.apiService = apiService;
         this.route = route;
         this.router = router;
         this.deviceService = deviceService;
         this.seoService = seoService;
+        this.socketService = socketService;
         this.emailList = [];
         this.loading = true;
         this.copied = false;
@@ -4146,16 +4151,11 @@ class MailboxEmailsListComponent {
             this.selectedEmail = null;
             console.error(err);
         });
-        const refreshEmailList = () => {
-            if (this.mailbox) {
+        this.socketService.lastEmailReceivedFrom.subscribe((emailReceivedFrom) => {
+            if (emailReceivedFrom.address === this.mailbox) {
                 this.apiService.listMailboxEmails(this.mailbox);
             }
-        };
-        if (!this.emailId) {
-            this.intervalId = setInterval(() => {
-                refreshEmailList();
-            }, 2500);
-        }
+        });
     }
     unsubscribe() {
         this.paramsSub.unsubscribe();
@@ -5985,7 +5985,7 @@ exports.AdsenseComponentNgFactory = AdsenseComponentNgFactory;
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/aaron/ahem/client/main.server.ts */"./client/main.server.ts");
+module.exports = __webpack_require__(/*! /Users/aaronyoung/dev/temp/ahem/client/main.server.ts */"./client/main.server.ts");
 
 
 /***/ }),

@@ -8,6 +8,7 @@ import {SeoService} from '../../core/services/seo.service';
 import {BehaviorSubject} from 'rxjs/internal/BehaviorSubject';
 import {DeviceService} from '../../core/services/device.service';
 import { ɵHttpInterceptingHandler } from '@angular/common/http';
+import { SocketService } from "../../core/services/socket.service";
 
 const copyToClipboard = str => {
   const el = document.createElement('textarea');
@@ -41,7 +42,8 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
       private route: ActivatedRoute,
       private router: Router,
       private deviceService: DeviceService,
-      private seoService: SeoService) {}
+      private seoService: SeoService,
+      private socketService: SocketService) {}
 
   ngOnInit() {
     this.paramsSub = this.route.params.subscribe(params => {
@@ -70,16 +72,11 @@ export class MailboxEmailsListComponent implements OnInit, OnDestroy {
       this.selectedEmail = null;
       console.error(err);
     });
-    const refreshEmailList = () => {
-      if (this.mailbox) {
+    this.socketService.lastEmailReceivedFrom.subscribe((emailReceivedFrom) => {
+      if (emailReceivedFrom.address === this.mailbox) {
         this.apiService.listMailboxEmails(this.mailbox)
       }
-    }
-    if (!this.emailId) {
-      this.intervalId = setInterval(() => {
-        refreshEmailList();
-      }, 2500);
-    }
+    });
   }
 
   unsubscribe(): void {

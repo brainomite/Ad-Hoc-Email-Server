@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import {Subject} from 'rxjs/internal/Subject';
 import {EmailInfo} from '../../model/email-info-model';
 import {EmailCount} from '../../model/email-count-model';
+import { EmailReceived } from "../../model/email-received-model";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class SocketService {
 
 
   emailCount: Subject<EmailCount> = new Subject<EmailCount>();
+  lastEmailReceivedFrom: Subject<EmailReceived> = new Subject<EmailReceived>();
 
   constructor(private http: HttpClient,
               @Optional() @Inject(APP_BASE_HREF) origin: string,
@@ -30,5 +32,6 @@ export class SocketService {
 
   initSocket() {
     this.socket.on('emailCount', count => this.emailCount.next(count));
+    this.socket.on('emailReceived', address => this.lastEmailReceivedFrom.next(address));
   }
 }
