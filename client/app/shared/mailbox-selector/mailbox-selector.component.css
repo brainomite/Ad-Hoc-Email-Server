@@ -34,9 +34,10 @@ input::placeholder {
 }
 
 .suffix {
-  color: #b0bec9;
+  color: black;
+  background-color: #e2f1fc;
   position: absolute;
-  bottom: 28px;
+  bottom: 50px;
   right: 0;
 }
 
@@ -45,7 +46,7 @@ input::placeholder {
   display: inline-block;
 }
 #username-input {
-  width: 133px;
+  width: 300px;
 }
 #missing-text-tooltiptext, #at-tooltiptext, #forbidden-tooltiptext {
   visibility: hidden;

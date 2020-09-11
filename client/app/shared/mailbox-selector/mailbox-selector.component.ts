@@ -90,7 +90,7 @@ export class MailboxSelectorComponent implements OnInit {
   }
 
   generateEmail() {
-    this.selectedMailbox = generateName().replace(' ', '-');
+    this.selectedMailbox = generateName().replace(' ', '-').toLowerCase();
   }
 
   fullAddress(){
