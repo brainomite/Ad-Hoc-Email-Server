@@ -68,7 +68,6 @@
 }
 
 #copy-button-div {
-  width: 100vw;
   display: flex;
   justify-content: center;
   padding-bottom: 15px;
