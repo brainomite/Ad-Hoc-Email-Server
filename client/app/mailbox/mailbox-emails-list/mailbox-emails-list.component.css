@@ -67,29 +67,13 @@
   margin: auto;
 }
 
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  cursor: pointer;
+#copy-button-div {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
 }
 
-.tooltip .tooltiptext {
-  opacity: 0;
-  transition: opacity 0.5s;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-}
-
-.tooltip .tooltip-visable {
-  /* visibility: visible; */
-  opacity: 1;
+#copy-button-div button {
+  border: solid 1px lightgray;
 }

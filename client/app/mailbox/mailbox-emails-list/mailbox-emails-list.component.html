@@ -9,6 +9,9 @@
 </div>
 
 <div *ngIf="!loading" class="ahem-centered ahem-overflow">
+  <div id="copy-button-div">
+    <button mat-button (click)="copyEmail()">Copy Email Address</button>
+  </div>
   <mat-list *ngIf="!selectedEmail" class="ahem-email-list">
     <div *ngIf="(emailList)?.length>0">
       <div class="email-list-container">
@@ -25,12 +28,7 @@
     <div *ngIf="(emailList)?.length==0" class="ahem-empty-list">
       <div>
         This mailbox is currently empty.
-        Emails sent to {{getEmptyMailboxText()}}
-        <div class="tooltip" (click)="copyEmail()" >
-          <img clipboard src="https://img.icons8.com/material-outlined/24/000000/add-to-clipboard.png">
-          <span class="tooltiptext" [ngClass]="copied ? 'tooltip-visable' : 'dummyclass'">Copied! </span>
-        </div>
-        will be listed here automagically once they arrive, NO need to refresh the page.
+        Emails sent to {{getEmptyMailboxText()}} will be listed here automagically once they arrive, NO need to refresh the page.
         <br>
       </div>
       <img src="assets/svg/fumbled-bluish.svg" class="fumbled">
