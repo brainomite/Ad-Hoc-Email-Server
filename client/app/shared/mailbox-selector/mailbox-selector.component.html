@@ -37,12 +37,14 @@
         {{ mailbox }}
       </mat-option>
     </mat-autocomplete>
-    <div class="tooltips">
-      <button mat-button (click)="clickSubmit()">Submit</button>
-      <!-- <span id="submit-tooltiptext" [ngClass]="badValue ? 'submit-tooltip-error' : 'dummy'">Can't open this mailbox, fix the error</span> -->
+    <div class="button-container">
+      <div class="tooltips">
+        <button mat-button (click)="clickSubmit()">Submit</button>
+        <!-- <span id="submit-tooltiptext" [ngClass]="badValue ? 'submit-tooltip-error' : 'dummy'">Can't open this mailbox, fix the error</span> -->
+      </div>
+      <button mat-button (click)="generateEmail()">Generate</button>
+      <button mat-button (click)="copyEmail()">Copy email</button>
     </div>
-    <button mat-button (click)="generateEmail()">Generate</button>
-    <button mat-button (click)="copyEmail()">Copy email</button>
   </div>
 </div>
 

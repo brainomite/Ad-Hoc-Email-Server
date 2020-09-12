@@ -83,3 +83,8 @@ input::placeholder {
 #forbidden-tooltiptext.forbidden-tooltip-error {
   visibility: visible;
 }
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
